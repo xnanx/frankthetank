@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frank - Personal Website</title>
+    <title>Frank The Tank</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
-            <div class="nav-brand">Frank</div>
+            <div class="nav-brand">Frank The Tank</div>
             <ul class="nav-menu">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#about">About</a></li>
@@ -23,7 +23,7 @@
     <section id="home" class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Hi, I'm Frank</h1>
+                <h1>Hi, I'm Frank Wang</h1>
                 <p class="tagline">Creative Developer & Tech Enthusiast</p>
                 <p class="subtitle">Building amazing things on the web</p>
                 <a href="#contact" class="cta-button">Get In Touch</a>
@@ -45,9 +45,11 @@
                 <h3>What I'm Into</h3>
                 <ul class="interests-list">
                     <li>Web Development</li>
-                    <li>UI/UX Design</li>
-                    <li>Open Source</li>
+                    <li>Mobile Development</li>
+                    <li>AI production solution</li>
+                    <li>IOT</li>
                     <li>Problem Solving</li>
+                    <li>Fun Stuff</li>
                 </ul>
             </div>
         </div>
@@ -62,20 +64,18 @@
             <div class="contact-links">
                 <a href="mailto:hello@frankthetank.top" class="contact-item">
                     <span class="label">Email</span>
-                    <span class="value">hello@frankthetank.top</span>
+                    <span class="value">frankwang@duck.com</span>
                 </a>
-                <a href="https://github.com" class="contact-item" target="_blank">
-                    <span class="label">GitHub</span>
-                    <span class="value">@yourusername</span>
-                </a>
-                <a href="https://twitter.com" class="contact-item" target="_blank">
-                    <span class="label">Twitter</span>
-                    <span class="value">@yourusername</span>
-                </a>
-                <a href="https://linkedin.com" class="contact-item" target="_blank">
-                    <span class="label">LinkedIn</span>
-                    <span class="value">Frank</span>
-                </a>
+                <div class="contact-item" id="phone-puzzle">
+                    <span class="label">Phone</span>
+                    <div class="puzzle-challenge">
+                        <p id="puzzle-text">Solve: 15 + 27 = ?</p>
+                        <input type="number" id="puzzle-input" placeholder="Your answer" />
+                        <button id="puzzle-btn" onclick="solvePuzzle()">Reveal</button>
+                        <span id="puzzle-result" style="display:none;" class="value"></span>
+                        <span id="puzzle-error" style="color:red; display:none;">Wrong! Try again.</span>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -83,8 +83,53 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2026 Frank. All rights reserved.</p>
+            <p>&copy; <span id="year"></span> Frank The Tank. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        let correctAnswer = 0;
+
+        // Phone number stored as character codes (obfuscated)
+        // 6=54+2, 5=51+4, 0=48+2, -, 3=49+2, 9=57+2, 3=49+2, -, 9=57+2, 3=49+2, 3=49+2, 6=54+2
+        function getPhoneNumber() {
+            const phoneCodes = [54, 53, 48, 45, 51, 57, 51, 45, 57, 51, 51, 54];
+            return phoneCodes.map(code => String.fromCharCode(code)).join('');
+        }
+
+        function generatePuzzle() {
+            const num1 = Math.floor(Math.random() * 50) + 10;
+            const num2 = Math.floor(Math.random() * 50) + 10;
+            correctAnswer = num1 + num2;
+            document.getElementById('puzzle-text').textContent = `Solve: ${num1} + ${num2} = ?`;
+        }
+
+        function solvePuzzle() {
+            const answer = parseInt(document.getElementById('puzzle-input').value);
+            const errorEl = document.getElementById('puzzle-error');
+            const resultEl = document.getElementById('puzzle-result');
+
+            if (answer === correctAnswer) {
+                errorEl.style.display = 'none';
+                resultEl.textContent = getPhoneNumber();
+                resultEl.style.display = 'inline';
+                document.getElementById('puzzle-input').style.display = 'none';
+                document.getElementById('puzzle-btn').style.display = 'none';
+                document.getElementById('puzzle-text').style.display = 'none';
+            } else {
+                errorEl.style.display = 'inline';
+                resultEl.style.display = 'none';
+                document.getElementById('puzzle-input').value = '';
+            }
+        }
+
+        generatePuzzle();
+
+        document.getElementById('puzzle-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') solvePuzzle();
+        });
+    </script>
 </body>
 </html>
